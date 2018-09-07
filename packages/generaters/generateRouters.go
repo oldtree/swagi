@@ -42,7 +42,6 @@ func BuildHandlers(sw *swag.Swagi, stmt *gen.File, funcMap map[string]map[string
 	for pathName, pathItem := range routePath {
 		routeGroup[pathName] = make(map[string]*gen.Statement)
 		if pathItem.Delete != nil {
-
 			//routeGroup[pathName]["delete"] = BuildDeleteMethod(pathItem.Delete, pathName, funcMap)
 		}
 		if pathItem.Get != nil {

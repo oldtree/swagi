@@ -16,9 +16,14 @@ func FilterDefinitionsName(params string) string {
 
 func GeneratModels(sw *swag.Swagi) {
 	f := gen.NewFile("models")
-	f.ImportName("github.com/gin-gonic/gin", "gin")
+	f.ImportAlias("github.com/gin-gonic/gin", "gin")
+	f.ImportAlias("github.com/jinzhu/gorm", "gorm")
+	f.ImportAlias("github.com/jinzhu/gorm/dialects/mysql", "_")
 	f.Func().Id("init").Params().Block(
 		gen.Qual("fmt", "Println").Call(gen.Lit("models init")),
+		gen.List(gen.Id("db")).Op(":=").Qual("gorm", "Open").Call(gen.Lit("mysql"), gen.Lit("user:password@/dbname?charset=utf8&parseTime=True&loc=Local")),
+		gen.List(gen.Defer().Qual("db", "Close").Call(gen.Lit(""))),
+		gen.Qual("fmt", "Println").Call(gen.Lit("models finished init")),
 	)
 
 	itemStatementma := make(map[string]*gen.Statement, len(sw.Description.Definitions))
